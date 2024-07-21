@@ -6,7 +6,8 @@ const project = resolve(process.cwd(), "tsconfig.json");
 module.exports = {
   extends: [
     "eslint:recommended",
-    "prettier",
+    "plugin:prettier/recommended",
+    require.resolve("@vercel/style-guide/eslint/react"),
     require.resolve("@vercel/style-guide/eslint/next"),
     "turbo",
   ],
@@ -18,7 +19,7 @@ module.exports = {
     node: true,
     browser: true,
   },
-  plugins: ["only-warn"],
+  plugins: ["only-warn", "import"],
   settings: {
     "import/resolver": {
       typescript: {
@@ -30,6 +31,17 @@ module.exports = {
     // Ignore dotfiles
     ".*.js",
     "node_modules/",
+    "package.json"
   ],
   overrides: [{ files: ["*.js?(x)", "*.ts?(x)"] }],
+  rules: {
+    "import/order": [
+      "error",
+      {
+        groups: ["builtin", "external", "internal", "parent", "sibling", "index", "object", "type"],
+        "newlines-between": "always",
+        alphabetize: { order: "asc" },
+      },
+    ]
+  }
 };
