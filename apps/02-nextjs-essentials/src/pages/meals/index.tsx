@@ -3,7 +3,16 @@ import Link from "next/link";
 import MealsGrid from "@/components/meals/meals-grid";
 import classes from "@/styles/meals.module.css";
 
-export default function MealPage() {
+import { getMeals } from "../../../lib/meals";
+
+export const getServerSideProps = async () => {
+  const result = await getMeals();
+  return {
+    props: { meals: result },
+  };
+};
+
+export default function MealsPage({ meals }: any) {
   return (
     <>
       <header className={classes.header}>
@@ -17,7 +26,7 @@ export default function MealPage() {
         </p>
       </header>
       <main className={classes.main}>
-        <MealsGrid meals={[]} />
+        <MealsGrid meals={meals} />
       </main>
     </>
   );
